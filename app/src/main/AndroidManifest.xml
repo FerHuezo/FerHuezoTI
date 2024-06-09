@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,8 +15,15 @@
         android:theme="@style/Theme.TicketIT"
         tools:targetApi="31">
         <activity
-            android:name=".activityRegistro"
-            android:exported="true">
+            android:name=".home_navigation"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".activity_infoCard"
+            android:exported="false" />
+        <activity
+            android:name=".activity_loginorregister"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,9 +31,11 @@
             </intent-filter>
     </activity>
         <activity
+            android:name=".activityRegistro"
+            android:exported="false"/>
+        <activity
             android:name=".MainActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"

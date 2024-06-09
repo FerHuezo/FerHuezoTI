@@ -8,11 +8,24 @@
     android:background="@drawable/background"
     tools:context=".activityRegistro">
 
+    <ImageButton
+        android:id="@+id/btnBackR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/arrowback"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.068"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.026" />
+
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="148dp"
         android:layout_height="54dp"
-        android:backgroundTint="#5FAFB6"
+        android:backgroundTint="#1E383A"
         android:text="Registrarme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -102,13 +115,13 @@
         app:layout_constraintVertical_bias="0.441" />
 
     <EditText
-        android:id="@+id/txtContra"
+        android:id="@+id/txtEmail"
         android:layout_width="219dp"
         android:layout_height="41dp"
         android:background="@drawable/pills"
         android:ems="10"
-        android:hint="Contraseña"
-        android:inputType="textPassword"
+        android:hint="Email"
+        android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -117,12 +130,12 @@
         app:layout_constraintVertical_bias="0.567" />
 
     <EditText
-        android:id="@+id/txtContraR"
+        android:id="@+id/txtContra"
         android:layout_width="216dp"
         android:layout_height="43dp"
         android:background="@drawable/pills"
         android:ems="10"
-        android:hint="Repetir contraseña"
+        android:hint="Contraseña"
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

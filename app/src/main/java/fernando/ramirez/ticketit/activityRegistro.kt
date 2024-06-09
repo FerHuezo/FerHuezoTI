@@ -1,9 +1,11 @@
 package fernando.ramirez.ticketit
 
 import Modelo.ClaseConexion
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +14,8 @@ import androidx.core.view.WindowInsetsCompat
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.UUID
 
 class activityRegistro : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,41 +29,53 @@ class activityRegistro : AppCompatActivity() {
         }
 
         val txtUsuario = findViewById<EditText>(R.id.txtUsuario)
+        val txtEmail = findViewById<EditText>(R.id.txtEmail)
         val txtContra = findViewById<EditText>(R.id.txtContra)
-        val txtContraR = findViewById<EditText>(R.id.txtContraR)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
+        val btnBackR = findViewById<ImageButton>(R.id.btnBackR)
 
-        fun limpiar()
+        btnBackR.setOnClickListener {
+            val backR = Intent(this, activity_loginorregister::class.java)
+            startActivity(backR)
+        }
+
+        fun limpiar(txtUsuario: EditText, txtEmail: EditText, txtContra: EditText)
         {
             txtUsuario.setText("")
+            txtEmail.setText("")
             txtContra.setText("")
-            txtContraR.setText("")
         }
 
-        fun VefContra()
-        {
-            if (txtContra.text.toString() == txtContraR.text.toString())
-            {
-                GlobalScope.launch(Dispatchers.Main){
+        btnRegister.setOnClickListener {
+            GlobalScope.launch(Dispatchers.IO) {
+                try {
+                    val objConexion = ClaseConexion().CadenaConexion()
+                    val addUser = objConexion?.prepareStatement("insert into tbUsuarios (UUID, nombreUsuario, email, contrasena) values (?, ?, ?, ?)")!!
+                    addUser.setString(1, UUID.randomUUID().toString())
+                    addUser.setString(2, txtUsuario.text.toString())
+                    addUser.setString(3, txtEmail.text.toString())
+                    addUser.setString(4, txtContra.text.toString())
 
-                    val claseConexion = ClaseConexion().CadenaConexion()
-
-                    val addUser = claseConexion?.prepareStatement("insert into tbUsuarios(nombreUsuario,contrasena) values(?,?)")!!
-
-                    addUser.setString(1, txtUsuario.text.toString())
-                    addUser.setString(2, txtContra.text.toString())
-                    addUser.executeUpdate()
-                    limpiar()
+                    val verificarFilas = addUser.executeUpdate()
+                    if (verificarFilas > 0) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@activityRegistro, "Usuario creado correctamente", Toast.LENGTH_SHORT).show()
+                            limpiar(txtUsuario, txtEmail, txtContra)
+                            val intent = Intent(this@activityRegistro, MainActivity::class.java)
+                            startActivity(intent)
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@activityRegistro, "Error al crear el usuario", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@activityRegistro, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                    }
+                    e.printStackTrace()
                 }
             }
-            else
-            {
-                Toast.makeText(this@activityRegistro, "Error, las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
-            }
         }
-        btnRegister.setOnClickListener {
-            VefContra()
-        }
-
     }
 }
